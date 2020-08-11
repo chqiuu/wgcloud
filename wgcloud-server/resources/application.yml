@@ -13,9 +13,9 @@ spring:
     name: wgcloud-server
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/wgcloud?characterEncoding=utf-8&characterSetResults=utf8&autoReconnect=true&useSSL=false&allowMultiQueries=true
-    username: root
-    password: mysql
+    url: jdbc:mysql://192.168.1.204:3309/wgcloud?characterEncoding=utf-8&characterSetResults=utf8&autoReconnect=true&useSSL=false&allowMultiQueries=true
+    username: test_user
+    password: test_user
     # hikari连接池的参数 相关设置
     hikari:
       # 生效超时

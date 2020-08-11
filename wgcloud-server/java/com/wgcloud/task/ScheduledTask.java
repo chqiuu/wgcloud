@@ -317,7 +317,7 @@ public class ScheduledTask {
      * 30秒后执行，之后每隔1分钟执行, 单位：ms。
      * 批量提交数据
      */
-    @Scheduled(initialDelay = 30000L, fixedRate = 1 * 60 * 1000)
+    @Scheduled(initialDelay = 30000L, fixedRate = 5 * 1000)
     public synchronized  void commitTask() {
         logger.info("批量提交监控数据任务开始----------"+DateUtil.getCurrentDateTime());
         try {

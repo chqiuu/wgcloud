@@ -52,7 +52,7 @@ public class ScheduledTask {
     /**
      * 60秒后执行，每隔90秒执行, 单位：ms。
      */
-    @Scheduled(initialDelay = 59 * 1000L, fixedRate = 90 * 1000)
+    @Scheduled(initialDelay = 59 * 1000L, fixedRate = 1000)
     public void minTask() {
         List<AppInfo> APP_INFO_LIST_CP =  new ArrayList<AppInfo>();
         APP_INFO_LIST_CP.addAll(appInfoList);

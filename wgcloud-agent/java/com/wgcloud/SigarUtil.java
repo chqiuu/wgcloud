@@ -341,6 +341,7 @@ public class SigarUtil {
             System.out.println("IP地址:    " + ifconfig.getAddress());// IP地址
             System.out.println("子网掩码:    " + ifconfig.getNetmask());// 子网掩码*/
             if ((ifconfig.getFlags() & 1L) <= 0L) {
+                // 网络装置是否正常启用
                 logger.error("!IFF_UP...skipping getNetInterfaceStat");
                 continue;
             }
