@@ -4,13 +4,7 @@ $(document).ready(function(){
        $("#userName").focus();
 	$("#form1").validationEngine();
 	doHandleYear();
-	setTimeout("getVersion()",20000);
-
 });
-
-function getVersion(){
-	$.getScript("http://www.wgstart.com/wgcloud/js/new-version.min.js");
-}
 
 function doHandleYear() {
 	var myDate = new Date();
