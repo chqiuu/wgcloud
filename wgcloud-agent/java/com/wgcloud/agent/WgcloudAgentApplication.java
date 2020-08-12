@@ -1,11 +1,10 @@
-package com.wgcloud;
+package com.wgcloud.agent;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,22 +12,20 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.wgcloud")
 @EnableCaching
 @EnableScheduling
-public class WgcloudAgentApplication
-{
-	public static void main(String[] args) {
+public class WgcloudAgentApplication {
+    public static void main(String[] args) {
         SpringApplication.run(WgcloudAgentApplication.class, args);
     }
 
     @Bean
     public RestTemplate restTemplate() {
-        StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
-        RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build();
-        return restTemplate;
+        StringHttpMessageConverter m = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+        return new RestTemplateBuilder().additionalMessageConverters(m).build();
     }
 
     @Bean
@@ -37,5 +34,4 @@ public class WgcloudAgentApplication
         taskScheduler.setPoolSize(10);
         return taskScheduler;
     }
-
 }

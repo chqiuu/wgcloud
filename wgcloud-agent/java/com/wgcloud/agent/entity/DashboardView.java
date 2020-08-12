@@ -1,4 +1,4 @@
-package com.wgcloud.entity;
+package com.wgcloud.agent.entity;
 
 /**
  *

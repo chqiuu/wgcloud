@@ -1,4 +1,4 @@
-package com.wgcloud.entity;
+package com.wgcloud.agent.entity;
 
 import org.apache.commons.lang3.StringUtils;
 

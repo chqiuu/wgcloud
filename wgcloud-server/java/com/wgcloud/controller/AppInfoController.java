@@ -16,9 +16,8 @@ import com.wgcloud.util.CodeUtil;
 import com.wgcloud.util.DateUtil;
 import com.wgcloud.util.PageUtil;
 import com.wgcloud.util.TokenUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,12 +38,10 @@ import com.wgcloud.util.staticvar.StaticKeys;
  * @Copyright: 2019-2020 wgcloud. All rights reserved.
  *
  */
+@Slf4j
 @Controller
 @RequestMapping("/appInfo")
 public class AppInfoController {
-	
-	 
-	private static final Logger logger = LoggerFactory.getLogger(AppInfoController.class);
 	
     @Resource
     private AppInfoService appInfoService;
@@ -83,7 +80,7 @@ public class AppInfoController {
 	public String agentList(@RequestBody String paramBean) {
 		JSONObject agentJsonObject = (JSONObject) JSONUtil.parse(paramBean);
 		if(!tokenUtils.checkAgentToken(agentJsonObject)){
-			logger.error("token is invalidate");
+			log.error("token is invalidate");
 			return "error：token is invalidate";
 		}
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -95,7 +92,7 @@ public class AppInfoController {
 			List<AppInfo> appInfoList  = appInfoService.selectAllByParams(params);
 			return JSONUtil.toJsonStr(appInfoList);
 		} catch (Exception e) {
-			logger.error("agent获取进程信息错误",e);
+			log.error("agent获取进程信息错误",e);
 			logInfoService.save("agent获取进程信息错误",e.toString(),StaticKeys.LOG_ERROR);
 
 		}
@@ -125,7 +122,7 @@ public class AppInfoController {
 			model.addAttribute("page", pageInfo);
 			model.addAttribute("appInfo", appInfo);
 		} catch (Exception e) {
-			logger.error("查询进程信息错误",e);
+			log.error("查询进程信息错误",e);
 			logInfoService.save("查询进程信息错误",e.toString(),StaticKeys.LOG_ERROR);
 
 		}
@@ -149,7 +146,7 @@ public class AppInfoController {
 				 appInfoService.updateById(AppInfo);
 			 }
 		} catch (Exception e) {
-			logger.error("保存进程错误：",e);
+			log.error("保存进程错误：",e);
 			logInfoService.save(AppInfo.getHostname(),"保存进程错误："+e.toString(),StaticKeys.LOG_ERROR);
 		}
     	 return "redirect:/appInfo/list";
@@ -176,7 +173,7 @@ public class AppInfoController {
 			appInfo = appInfoService.selectById(id);
 			model.addAttribute("appInfo", appInfo);
 		} catch (Exception e) {
-			logger.error(errorMsg,e);
+			log.error(errorMsg,e);
 			logInfoService.save(appInfo.getAppPid(),errorMsg+e.toString(),StaticKeys.LOG_ERROR);
 		}
 		return "app/add";
@@ -210,7 +207,7 @@ public class AppInfoController {
 			List<AppState> appStateList = appStateService.selectAllByParams(params);
 			model.addAttribute("appStateList", JSONUtil.parseArray(appStateList));
 		} catch (Exception e) {
-			logger.error(errorMsg,e);
+			log.error(errorMsg,e);
 			logInfoService.save(appInfo.getHostname()+":"+appInfo.getAppPid(),errorMsg+e.toString(),StaticKeys.LOG_ERROR);
 		}
 		return "app/view";
@@ -236,12 +233,10 @@ public class AppInfoController {
 				appInfoService.deleteById(request.getParameter("id").split(","));
 			}
 		} catch (Exception e) {
-			logger.error(errorMsg,e);
+			log.error(errorMsg,e);
 			logInfoService.save(appInfo.getHostname()+":"+appInfo.getAppPid(),errorMsg+e.toString(),StaticKeys.LOG_ERROR);
 		}
 		
         return "redirect:/appInfo/list";
     }   
-    
-
 }

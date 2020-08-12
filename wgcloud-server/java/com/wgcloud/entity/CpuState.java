@@ -3,6 +3,7 @@ package com.wgcloud.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.wgcloud.entity.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -15,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
  * @Copyright: 2019-2020 wgcloud. All rights reserved.
  *
  */
-public class CpuState extends BaseEntity{
+public class CpuState extends BaseEntity {
 	
 	/**
 	 * 

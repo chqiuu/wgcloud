@@ -1,10 +1,10 @@
 server:
   port: 9998
   servlet:
-    context-path: /wgcloud-agent
+    context-path: /monitor-agent
 spring:
   application:
-    name: wgcloud-agent
+    name: monitor-agent
 #日志文件输出路径
 logging:
   path: ./log
@@ -12,7 +12,7 @@ logging:
 #自定义配置参数
 base:
   #wgcloud-server端访问地址
-  serverUrl: http://localhost:9999
+  serverUrl: http://192.168.1.251:9999
   #本机ip，不要用localhost或127.0.0.1
   bindIp: 192.168.1.9
   #通信token，请和server端配置的wgToken保持一致

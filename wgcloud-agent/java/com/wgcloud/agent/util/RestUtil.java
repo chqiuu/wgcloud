@@ -1,7 +1,9 @@
-package com.wgcloud;
+package com.wgcloud.agent.util;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.wgcloud.agent.config.CommonConfig;
+import com.wgcloud.agent.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,9 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -33,7 +32,7 @@ public class RestUtil {
 
     public String post(String url, JSONObject jsonObject){
         if(null!=jsonObject){
-            jsonObject.put("wgToken",MD5Utils.GetMD5Code(commonConfig.getWgToken()));
+            jsonObject.put("wgToken", MD5Utils.GetMD5Code(commonConfig.getWgToken()));
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);

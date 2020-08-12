@@ -205,7 +205,7 @@ public class DashboardCotroller {
 	 * @return
 	 */
 	@RequestMapping(value="systemInfoList")
-	public String systemInfoList(SystemInfo systemInfo,Model model,HttpServletRequest request) {
+	public String systemInfoList(SystemInfo systemInfo, Model model, HttpServletRequest request) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
 			PageInfo pageInfo = systemInfoService.selectByParams(params, systemInfo.getPage(), systemInfo.getPageSize());

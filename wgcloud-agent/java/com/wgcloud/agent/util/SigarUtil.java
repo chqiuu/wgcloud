@@ -1,9 +1,10 @@
-package com.wgcloud;
+package com.wgcloud.agent.util;
 
-import com.wgcloud.entity.*;
+import com.wgcloud.agent.ApplicationContextHelper;
+import com.wgcloud.agent.config.CommonConfig;
+import com.wgcloud.agent.entity.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hyperic.sigar.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -20,11 +21,10 @@ import java.util.List;
  * @Copyright: 2019 wgcloud. All rights reserved.
  *
  */
+@Slf4j
 public class SigarUtil {
 
-    private static Logger logger  = LoggerFactory.getLogger(SigarUtil.class);
-
-    private static  CommonConfig commonConfig= (CommonConfig) ApplicationContextHelper.getBean(CommonConfig.class);
+    private static CommonConfig commonConfig= (CommonConfig) ApplicationContextHelper.getBean(CommonConfig.class);
 
     private static  Runtime r = Runtime.getRuntime();
     private static  Sigar sigar = new Sigar();
@@ -232,7 +232,7 @@ public class SigarUtil {
                 deskState.setCreateTime(t);
                 list.add(deskState);
             }catch (SigarException e){
-                logger.error(e.toString());
+                log.error(e.toString());
             }
            /* // 分区的盘符名称
             System.out.println("盘符名称:    " + fs.getDevName());
@@ -323,7 +323,7 @@ public class SigarUtil {
             appState.setMemPer(FormatUtil.formatDouble((ProcMem.getResident()/1024/1024),2));
             return appState;
         }catch (SigarException e){
-            logger.error("获取进程信息错误",e);
+            log.error("获取进程信息错误",e);
         }
         return null;
     }
@@ -342,7 +342,7 @@ public class SigarUtil {
             System.out.println("子网掩码:    " + ifconfig.getNetmask());// 子网掩码*/
             if ((ifconfig.getFlags() & 1L) <= 0L) {
                 // 网络装置是否正常启用
-                logger.error("!IFF_UP...skipping getNetInterfaceStat");
+                log.error("!IFF_UP...skipping getNetInterfaceStat");
                 continue;
             }
             NetInterfaceStat ifstat = sigar.getNetInterfaceStat(name);

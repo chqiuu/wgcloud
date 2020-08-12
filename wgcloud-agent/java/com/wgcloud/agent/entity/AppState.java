@@ -1,6 +1,5 @@
-package com.wgcloud.entity;
+package com.wgcloud.agent.entity;
 
-import com.wgcloud.FormatUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;

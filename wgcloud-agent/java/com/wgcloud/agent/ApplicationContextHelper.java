@@ -1,4 +1,4 @@
-package com.wgcloud;
+package com.wgcloud.agent;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

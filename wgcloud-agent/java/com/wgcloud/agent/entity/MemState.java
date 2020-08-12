@@ -1,4 +1,4 @@
-package com.wgcloud.entity;
+package com.wgcloud.agent.entity;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -6,21 +6,22 @@ import java.util.Date;
 
 /**
  *
- * @ClassName:DeskState.java     
+ * @ClassName:MemState.java     
  * @version V2.3
  * @author: wgcloud     
  * @date: 2019年11月16日
- * @Description: 查看磁盘大小使用信息
+ * @Description: 查看内存使用情况
  * @Copyright: 2019-2022 wgcloud. All rights reserved.
  *
  */
-public class DeskState extends BaseEntity{
+public class MemState extends BaseEntity {
 	
+
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 879979812204191283L;
+	private static final long serialVersionUID = -1412473355088780549L;
 
 
 	/**
@@ -29,29 +30,24 @@ public class DeskState extends BaseEntity{
 	private String hostname;
 
 	/**
-	 * 盘符类型
+	 * 总计内存，M
 	 */
-    private String fileSystem;
+    private String total;
 
     /**
-	 *分区大小
-	 */
-    private String size;
-    
-    /**
-	 * 已使用
+	 *已使用多少，M
 	 */
     private String used;
     
     /**
-   	 * 可用
-   	 */
-    private String avail;
+	 * 未使用，M
+	 */
+    private String free;
     
     /**
-   	 * 已使用百分比
-   	 */
-    private String usePer;
+     * 已使用百分比%
+     */
+    private Double usePer;
     
     /**
      * 添加时间
@@ -65,20 +61,13 @@ public class DeskState extends BaseEntity{
     private Date createTime; 
 
     
-	public String getFileSystem() {
-		return fileSystem;
+    
+	public String getTotal() {
+		return total;
 	}
 
-	public void setFileSystem(String fileSystem) {
-		this.fileSystem = fileSystem;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
+	public void setTotal(String total) {
+		this.total = total;
 	}
 
 	public String getUsed() {
@@ -89,20 +78,12 @@ public class DeskState extends BaseEntity{
 		this.used = used;
 	}
 
-	public String getAvail() {
-		return avail;
+	public String getFree() {
+		return free;
 	}
 
-	public void setAvail(String avail) {
-		this.avail = avail;
-	}
-
-	public String getUsePer() {
-		return usePer;
-	}
-
-	public void setUsePer(String usePer) {
-		this.usePer = usePer;
+	public void setFree(String free) {
+		this.free = free;
 	}
 
 	
@@ -133,7 +114,14 @@ public class DeskState extends BaseEntity{
 		this.hostname = hostname;
 	}
 
-	
+	public Double getUsePer() {
+		return usePer;
+	}
+
+	public void setUsePer(Double usePer) {
+		this.usePer = usePer;
+	}
+
 	
    
 }
