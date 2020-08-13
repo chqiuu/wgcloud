@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "base")
 public class CommonConfig {
 
-
-
 	//admin管理员密码
 	private  String admindPwd= "111111";
 	private  String wgToken = "";

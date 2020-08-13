@@ -12,21 +12,19 @@ import java.util.List;
 
 
 /**
- *
- * @ClassName:SigarUtil.java
  * @version V2.3
+ * @ClassName:SigarUtil.java
  * @author: wgcloud
  * @date: 2019年11月16日
  * @Description: SigarUtil.java
  * @Copyright: 2019 wgcloud. All rights reserved.
- *
  */
 @Slf4j
 public class SigarUtil {
 
-    private static  Runtime r = Runtime.getRuntime();
-    private static  Sigar sigar = new Sigar();
-    private static   OperatingSystem OS = OperatingSystem.getInstance();
+    private static Runtime r = Runtime.getRuntime();
+    private static Sigar sigar = new Sigar();
+    private static OperatingSystem OS = OperatingSystem.getInstance();
 
    /* public static void property() throws UnknownHostException {
         Properties props = System.getProperties();
@@ -77,6 +75,7 @@ public class SigarUtil {
 
     /**
      * 获取内存使用信息
+     *
      * @return
      * @throws SigarException
      */
@@ -84,14 +83,14 @@ public class SigarUtil {
 
         MemState memState = new MemState();
         Mem mem = sigar.getMem();
-        long total =  mem.getTotal() / 1024L/ 1024L;
-        long used =  mem.getUsed() / 1024L/ 1024L;
-        long free =  mem.getFree() / 1024L/ 1024L;
-        double usePer = (double)used/(double)total;
-        memState.setUsePer(FormatUtil.formatDouble(usePer*100,1));
-        memState.setFree(free+"");
-        memState.setUsed(used+"");
-        memState.setTotal(total+"");
+        long total = mem.getTotal() / 1024L / 1024L;
+        long used = mem.getUsed() / 1024L / 1024L;
+        long free = mem.getFree() / 1024L / 1024L;
+        double usePer = (double) used / (double) total;
+        memState.setUsePer(FormatUtil.formatDouble(usePer * 100, 1));
+        memState.setFree(free + "");
+        memState.setUsed(used + "");
+        memState.setTotal(total + "");
         return memState;
        /* Swap swap = sigar.getSwap();
         // 交换区总量
@@ -104,6 +103,7 @@ public class SigarUtil {
 
     /**
      * 获取cpu使用率，等待率，空闲率
+     *
      * @return
      * @throws SigarException
      */
@@ -121,14 +121,14 @@ public class SigarUtil {
             System.out.println("CPU生产商:    " + info.getVendor());// 获得CPU的卖主，如：Intel
             System.out.println("CPU类别:    " + info.getModel());// 获得CPU的类别，如：Celeron
             System.out.println("CPU缓存数量:    " + info.getCacheSize());// 缓冲存储器数量*/
-            sys+=Double.valueOf(FormatUtil.delChar(CpuPerc.format(cpuList[i].getCombined())));
-            wait+=Double.valueOf(FormatUtil.delChar(CpuPerc.format(cpuList[i].getWait())));
-            idle+=Double.valueOf(FormatUtil.delChar(CpuPerc.format(cpuList[i].getIdle())));
+            sys += Double.valueOf(FormatUtil.delChar(CpuPerc.format(cpuList[i].getCombined())));
+            wait += Double.valueOf(FormatUtil.delChar(CpuPerc.format(cpuList[i].getWait())));
+            idle += Double.valueOf(FormatUtil.delChar(CpuPerc.format(cpuList[i].getIdle())));
         }
         CpuState cpuState = new CpuState();
-        cpuState.setSys(FormatUtil.formatDouble(sys/infos.length,1));
-        cpuState.setIdle(FormatUtil.formatDouble(idle/infos.length,1));
-        cpuState.setIowait(FormatUtil.formatDouble(wait/infos.length,1));
+        cpuState.setSys(FormatUtil.formatDouble(sys / infos.length, 1));
+        cpuState.setIdle(FormatUtil.formatDouble(idle / infos.length, 1));
+        cpuState.setIowait(FormatUtil.formatDouble(wait / infos.length, 1));
         return cpuState;
     }
 
@@ -144,6 +144,7 @@ public class SigarUtil {
 
     /**
      * 获取操作系统信息
+     *
      * @return
      * @throws SigarException
      */
@@ -151,12 +152,12 @@ public class SigarUtil {
         SystemInfo systemInfo = new SystemInfo();
         Sigar sigar = new Sigar();
         CpuInfo infos[] = sigar.getCpuInfoList();
-        systemInfo.setCpuCoreNum(infos.length+"");
-        if(infos.length>0){
+        systemInfo.setCpuCoreNum(infos.length + "");
+        if (infos.length > 0) {
             systemInfo.setCpuXh(infos[0].getModel());
         }
         systemInfo.setVersion(OS.getVersion());
-        systemInfo.setVersionDetail(OS.getDescription()+" "+OS.getArch());
+        systemInfo.setVersionDetail(OS.getDescription() + " " + OS.getArch());
         systemInfo.setState("1");
         return systemInfo;
        /* // 操作系统内核类型如： 386、486、586等x86
@@ -198,6 +199,7 @@ public class SigarUtil {
 
     /**
      * 获取磁盘使用信息
+     *
      * @throws Exception
      */
     public static List<DeskState> file(Timestamp t) throws Exception {
@@ -208,24 +210,24 @@ public class SigarUtil {
         double usePerSum = 0;
         FileSystem fslist[] = sigar.getFileSystemList();
         for (int i = 0; i < fslist.length; i++) {
-            try{
+            try {
                 DeskState deskState = new DeskState();
-    //                System.out.println("分区的盘符名称" + i);
+                //                System.out.println("分区的盘符名称" + i);
                 FileSystem fs = fslist[i];
                 deskState.setFileSystem(fs.getDevName());
                 FileSystemUsage usage = sigar.getFileSystemUsage(fs.getDirName());
-                usedSum+=(usage.getUsed()/1024/1024);
-                deskState.setUsed((usage.getUsed()/1024/1024)+"G");
-                availSum+=(usage.getAvail()/1024/1024);
-                deskState.setAvail((usage.getAvail()/1024/1024)+"G");
-                sizeSum+=(usage.getTotal()/1024/1024);
-                deskState.setSize((usage.getTotal()/1024/1024)+"G");
-                double usePercent = FormatUtil.formatDouble(usage.getUsePercent()* 100D,2) ;
-                usePerSum+=usePercent;
-                deskState.setUsePer(usePercent+"%");
+                usedSum += (usage.getUsed() / 1024 / 1024);
+                deskState.setUsed((usage.getUsed() / 1024 / 1024) + "G");
+                availSum += (usage.getAvail() / 1024 / 1024);
+                deskState.setAvail((usage.getAvail() / 1024 / 1024) + "G");
+                sizeSum += (usage.getTotal() / 1024 / 1024);
+                deskState.setSize((usage.getTotal() / 1024 / 1024) + "G");
+                double usePercent = FormatUtil.formatDouble(usage.getUsePercent() * 100D, 2);
+                usePerSum += usePercent;
+                deskState.setUsePer(usePercent + "%");
                 deskState.setCreateTime(t);
                 list.add(deskState);
-            }catch (SigarException e){
+            } catch (SigarException e) {
                 log.error(e.toString());
             }
            /* // 分区的盘符名称
@@ -272,30 +274,31 @@ public class SigarUtil {
             System.out.println(fs.getDevName() + "写入：    " + usage.getDiskWrites());*/
         }
         DeskState deskStateSum = new DeskState();
-        deskStateSum.setAvail(availSum+"G");
+        deskStateSum.setAvail(availSum + "G");
         deskStateSum.setFileSystem("总计");
-        deskStateSum.setSize(sizeSum+"G");
-        double sumUsePercent = FormatUtil.formatDouble(((double) usedSum/(double)sizeSum)* 100D,2) ;
-        deskStateSum.setUsePer(sumUsePercent+"%");
-        deskStateSum.setUsed(usedSum+"G");
-        deskStateSum.setCreateTime(FormatUtil.getDateBefore(t,1));
+        deskStateSum.setSize(sizeSum + "G");
+        double sumUsePercent = FormatUtil.formatDouble(((double) usedSum / (double) sizeSum) * 100D, 2);
+        deskStateSum.setUsePer(sumUsePercent + "%");
+        deskStateSum.setUsed(usedSum + "G");
+        deskStateSum.setCreateTime(FormatUtil.getDateBefore(t, 1));
         list.add(deskStateSum);
         return list;
     }
 
     /**
      * 获取系统负载
+     *
      * @return
      */
     public static SysLoadState getLoadState(SystemInfo systemInfo) throws SigarException {
         SysLoadState sysLoadState = new SysLoadState();
-        if(systemInfo==null){
+        if (systemInfo == null) {
             return null;
         }
-        if(systemInfo.getVersionDetail().contains("Microsoft")){
+        if (systemInfo.getVersionDetail().contains("Microsoft")) {
             return null;
         }
-        double[] load =  sigar.getLoadAverage();
+        double[] load = sigar.getLoadAverage();
         sysLoadState.setOneLoad(load[0]);
 
         sysLoadState.setFiveLoad(load[1]);
@@ -305,28 +308,29 @@ public class SigarUtil {
 
     /**
      * 获取进程信息
+     *
      * @return
      */
     public static AppState getLoadPid(String pid) throws SigarException {
-        try{
+        try {
             AppState appState = new AppState();
             ProcCpu ProcCpu = sigar.getProcCpu(pid);
             ProcMem ProcMem = sigar.getProcMem(pid);
-            appState.setCpuPer(FormatUtil.formatDouble(ProcCpu.getPercent(),2));
-            appState.setMemPer(FormatUtil.formatDouble((ProcMem.getResident()/1024/1024),2));
+            appState.setCpuPer(FormatUtil.formatDouble(ProcCpu.getPercent(), 2));
+            appState.setMemPer(FormatUtil.formatDouble((ProcMem.getResident() / 1024 / 1024), 2));
             return appState;
-        }catch (SigarException e){
-            log.error("获取进程信息错误",e);
+        } catch (SigarException e) {
+            log.error("获取进程信息错误", e);
         }
         return null;
     }
 
-   public static NetIoState net() throws Exception {
+    public static NetIoState net() throws Exception {
         String ifNames[] = sigar.getNetInterfaceList();
-       int rxBytesSum=0;
-       int txBytesSum=0;
-       int rxPackets=0;
-       int txPackets=0;
+        int rxBytesSum = 0;
+        int txBytesSum = 0;
+        int rxPackets = 0;
+        int txPackets = 0;
         for (int i = 0; i < ifNames.length; i++) {
             String name = ifNames[i];
             NetInterfaceConfig ifconfig = sigar.getNetInterfaceConfig(name);
@@ -347,17 +351,17 @@ public class SigarUtil {
             System.out.println(name + "发送数据包时的错误数:" + ifstat.getTxErrors());// 发送数据包时的错误数
             System.out.println(name + "接收时丢弃的包数:" + ifstat.getRxDropped());// 接收时丢弃的包数
             System.out.println(name + "发送时丢弃的包数:" + ifstat.getTxDropped());// 发送时丢弃的包数*/
-            rxBytesSum+=(ifstat.getRxBytes()/1024);
-            txBytesSum+=(ifstat.getTxBytes()/1024);
-            rxPackets+=ifstat.getRxPackets();
-            txPackets+=ifstat.getTxPackets();
+            rxBytesSum += (ifstat.getRxBytes() / 1024);
+            txBytesSum += (ifstat.getTxBytes() / 1024);
+            rxPackets += ifstat.getRxPackets();
+            txPackets += ifstat.getTxPackets();
         }
         NetIoState netIoState = new NetIoState();
-        netIoState.setRxbyt(rxBytesSum+"");
-       netIoState.setTxbyt(txBytesSum+"");
-       netIoState.setRxpck(rxPackets+"");
-       netIoState.setTxpck(txPackets+"");
-       return netIoState;
+        netIoState.setRxbyt(rxBytesSum + "");
+        netIoState.setTxbyt(txBytesSum + "");
+        netIoState.setRxpck(rxPackets + "");
+        netIoState.setTxpck(txPackets + "");
+        return netIoState;
     }
 
     /*public static void ethernet() throws SigarException {

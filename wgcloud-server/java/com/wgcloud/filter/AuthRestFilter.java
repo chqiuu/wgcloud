@@ -41,7 +41,6 @@ public class AuthRestFilter implements Filter {
         final HttpSession session = request.getSession();
         AccountInfo accountInfo = (AccountInfo) session.getAttribute(StaticKeys.LOGIN_KEY);
         String uri = request.getRequestURL().toString();
-        log.info("uri----"+request.getRequestURL());
         menuActive(  session, uri);
         for (String ss : static_resource) {
             if (uri.indexOf(ss) != -1) {
