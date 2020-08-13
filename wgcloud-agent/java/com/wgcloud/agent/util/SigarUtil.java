@@ -24,8 +24,6 @@ import java.util.List;
 @Slf4j
 public class SigarUtil {
 
-    private static CommonConfig commonConfig= (CommonConfig) ApplicationContextHelper.getBean(CommonConfig.class);
-
     private static  Runtime r = Runtime.getRuntime();
     private static  Sigar sigar = new Sigar();
     private static   OperatingSystem OS = OperatingSystem.getInstance();
@@ -94,7 +92,6 @@ public class SigarUtil {
         memState.setFree(free+"");
         memState.setUsed(used+"");
         memState.setTotal(total+"");
-        memState.setHostname(commonConfig.getBindIp());
         return memState;
        /* Swap swap = sigar.getSwap();
         // 交换区总量
@@ -132,7 +129,6 @@ public class SigarUtil {
         cpuState.setSys(FormatUtil.formatDouble(sys/infos.length,1));
         cpuState.setIdle(FormatUtil.formatDouble(idle/infos.length,1));
         cpuState.setIowait(FormatUtil.formatDouble(wait/infos.length,1));
-        cpuState.setHostname(commonConfig.getBindIp());
         return cpuState;
     }
 
@@ -155,7 +151,6 @@ public class SigarUtil {
         SystemInfo systemInfo = new SystemInfo();
         Sigar sigar = new Sigar();
         CpuInfo infos[] = sigar.getCpuInfoList();
-        systemInfo.setHostname(commonConfig.getBindIp());
         systemInfo.setCpuCoreNum(infos.length+"");
         if(infos.length>0){
             systemInfo.setCpuXh(infos[0].getModel());
@@ -218,7 +213,6 @@ public class SigarUtil {
     //                System.out.println("分区的盘符名称" + i);
                 FileSystem fs = fslist[i];
                 deskState.setFileSystem(fs.getDevName());
-                deskState.setHostname(commonConfig.getBindIp());
                 FileSystemUsage usage = sigar.getFileSystemUsage(fs.getDirName());
                 usedSum+=(usage.getUsed()/1024/1024);
                 deskState.setUsed((usage.getUsed()/1024/1024)+"G");
@@ -278,7 +272,6 @@ public class SigarUtil {
             System.out.println(fs.getDevName() + "写入：    " + usage.getDiskWrites());*/
         }
         DeskState deskStateSum = new DeskState();
-        deskStateSum.setHostname(commonConfig.getBindIp());
         deskStateSum.setAvail(availSum+"G");
         deskStateSum.setFileSystem("总计");
         deskStateSum.setSize(sizeSum+"G");
@@ -299,12 +292,12 @@ public class SigarUtil {
         if(systemInfo==null){
             return null;
         }
-        if(systemInfo.getVersionDetail().indexOf("Microsoft")>-1){
+        if(systemInfo.getVersionDetail().contains("Microsoft")){
             return null;
         }
         double[] load =  sigar.getLoadAverage();
         sysLoadState.setOneLoad(load[0]);
-        sysLoadState.setHostname(commonConfig.getBindIp());
+
         sysLoadState.setFiveLoad(load[1]);
         sysLoadState.setFifteenLoad(load[2]);
         return sysLoadState;
@@ -364,7 +357,6 @@ public class SigarUtil {
        netIoState.setTxbyt(txBytesSum+"");
        netIoState.setRxpck(rxPackets+"");
        netIoState.setTxpck(txPackets+"");
-       netIoState.setHostname(commonConfig.getBindIp());
        return netIoState;
     }
 
@@ -387,4 +379,12 @@ public class SigarUtil {
         }
     }*/
 
+    public static void main(String[] args) {
+        try {
+            AppState appState = SigarUtil.getLoadPid("15144");
+            System.out.println(appState);
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+    }
 }

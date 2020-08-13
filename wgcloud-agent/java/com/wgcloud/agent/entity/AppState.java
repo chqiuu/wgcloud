@@ -1,5 +1,7 @@
 package com.wgcloud.agent.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
@@ -14,20 +16,18 @@ import java.util.Date;
  * @Copyright: 2019-2022 wgcloud. All rights reserved.
  *
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class AppState extends BaseEntity {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2913111613773445949L;
-
-	
 	/**
 	 * 应用信息ID
 	 */
 	private String appInfoId;
-	
-
 	/**
 	 * %CPU
 	 */
@@ -48,51 +48,4 @@ public class AppState extends BaseEntity {
      * 创建时间
      */
     private Date createTime; 
-
-
-	public Double getCpuPer() {
-		return cpuPer;
-	}
-
-	public void setCpuPer(Double cpuPer) {
-		this.cpuPer = cpuPer;
-	}
-
-	
-	public String getAppInfoId() {
-		return appInfoId;
-	}
-
-	public void setAppInfoId(String appInfoId) {
-		this.appInfoId = appInfoId;
-	}
-
-	public Double getMemPer() {
-		return memPer;
-	}
-
-	public void setMemPer(Double memPer) {
-		this.memPer = memPer;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public String getDateStr() {
-		if(!StringUtils.isEmpty(dateStr)&&dateStr.length()>16){
-			return dateStr.substring(5);
-		}
-		return dateStr;
-	}
-
-	public void setDateStr(String dateStr) {
-		this.dateStr = dateStr;
-	}
-
-   
 }

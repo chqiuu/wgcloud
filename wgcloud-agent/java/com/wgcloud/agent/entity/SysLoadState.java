@@ -118,7 +118,4 @@ public class SysLoadState extends BaseEntity {
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
 	}
-
-	
-   
 }

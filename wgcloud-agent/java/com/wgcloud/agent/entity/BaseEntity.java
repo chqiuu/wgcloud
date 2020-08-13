@@ -1,50 +1,18 @@
 package com.wgcloud.agent.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
-
+@Data
 public class BaseEntity implements Serializable {
-
-
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8698319936744959815L;
-
-
+     *
+     */
+    private static final long serialVersionUID = 8698319936744959815L;
     private String id;
 
-    private Integer page;
+    private Integer page = 1;
 
-    private Integer pageSize;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Integer getPage() {
-		if(page==null) {
-			page =  1;
-		}
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public Integer getPageSize() {
-		if(pageSize==null) {
-			pageSize = 20;
-		}
-		return pageSize;
-	}
-
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
+    private Integer pageSize = 20;
 }
