@@ -201,8 +201,6 @@ public class ScheduledTask {
         } catch (Exception e) {
             logger.error("检测进程是否下线错误", e);
         }
-
-
     }
 
 
@@ -214,18 +212,24 @@ public class ScheduledTask {
     public void heathMonitorTask() {
         logger.info("heathMonitorTask------------" + DateUtil.getDateTimeString(new Date()));
         Map<String, Object> params = new HashMap<>();
-        List<HeathMonitor> heathMonitors = new ArrayList<HeathMonitor>();
+        List<HeathMonitor> healthMonitors = new ArrayList<HeathMonitor>();
+        // 正常的列表
+        List<HeathMonitor> healths = new ArrayList<HeathMonitor>();
+        // 不正常的服务列表
+        List<HeathMonitor> illHealths = new ArrayList<HeathMonitor>();
         List<LogInfo> logInfoList = new ArrayList<LogInfo>();
         Date date = DateUtil.getNowTime();
         try {
+            // 获取需要监控服务列表
             List<HeathMonitor> heathMonitorAllList = heathMonitorService.selectAllByParams(params);
             if (heathMonitorAllList.size() > 0) {
                 for (HeathMonitor h : heathMonitorAllList) {
                     int status = 500;
+                    // 连接该服务
                     status = restUtil.get(h.getHeathUrl());
                     h.setCreateTime(date);
                     h.setHeathStatus(status + "");
-                    heathMonitors.add(h);
+                    healthMonitors.add(h);
                     if (!"200".equals(h.getHeathStatus())) {
                         if (!StringUtils.isEmpty(WarnPools.MEM_WARN_MAP.get(h.getId()))) {
                             continue;
@@ -235,20 +239,28 @@ public class ScheduledTask {
                         logInfo.setInfoContent("服务接口检测异常：" + h.getAppName() + "，" + h.getHeathUrl() + "，返回状态" + h.getHeathStatus());
                         logInfo.setState(StaticKeys.LOG_ERROR);
                         logInfoList.add(logInfo);
-                        Runnable runnable = () -> {
-                            WarnMailUtil.sendHeathInfo(h, true);
-                        };
-                        executor.execute(runnable);
+                        illHealths.add(h);
+
                     } else {
                         if (!StringUtils.isEmpty(WarnPools.MEM_WARN_MAP.get(h.getId()))) {
-                            Runnable runnable = () -> {
-                                WarnMailUtil.sendHeathInfo(h, false);
-                            };
-                            executor.execute(runnable);
+                            healths.add(h);
                         }
                     }
                 }
-                heathMonitorService.updateRecord(heathMonitors);
+                if (illHealths.size() > 0) {
+                    Runnable runnable = () -> {
+                        WarnMailUtil.sendHeaths(illHealths, true);
+                    };
+                    executor.execute(runnable);
+                }
+                if (healths.size() > 0) {
+                    Runnable runnable = () -> {
+                        WarnMailUtil.sendHeaths(illHealths, false);
+                    };
+                    executor.execute(runnable);
+                }
+
+                heathMonitorService.updateRecord(healthMonitors);
                 if (logInfoList.size() > 0) {
                     logInfoService.saveRecord(logInfoList);
                 }

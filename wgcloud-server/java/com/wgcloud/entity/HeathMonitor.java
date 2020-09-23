@@ -13,30 +13,22 @@ import java.util.Date;
  *
  */
 public class HeathMonitor extends BaseEntity{
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2913111613773445949L;
-
-
-
 	/**
 	 * 应用服务名称
 	 */
 	private String appName;
-
 	/**
 	 * 心跳检测Url
 	 */
     private String heathUrl;
-    
     /**
 	 * 状态
 	 */
     private String heathStatus;
-
-
 	/**
      * 创建时间
      */
