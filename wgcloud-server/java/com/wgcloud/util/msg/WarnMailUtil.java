@@ -37,7 +37,6 @@ public class WarnMailUtil {
      * 判断系统内存使用率是否超过98%，超过则发送告警邮件
      *
      * @param memState
-     * @param toMail
      * @return
      */
     public static boolean sendWarnInfo(MemState memState) {
@@ -75,7 +74,6 @@ public class WarnMailUtil {
      * 判断系统cpu使用率是否超过98%，超过则发送告警邮件
      *
      * @param cpuState
-     * @param toMail
      * @return
      */
     public static boolean sendCpuWarnInfo(CpuState cpuState) {
@@ -263,7 +261,7 @@ public class WarnMailUtil {
     /**
      * 进程下线发送告警邮件
      *
-     * @param AppInfo 进程信息
+     * @param appInfo 进程信息
      * @param isDown  是否是下线告警，true下线告警，false上线恢复
      * @return
      */
